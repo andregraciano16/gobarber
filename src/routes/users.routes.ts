@@ -9,7 +9,6 @@ const usersRouter = Router();
 const upload = multer(uploadConfig);
 usersRouter.post('/', async (request, response) => {
     const { name, email, password } = request.body;
-
     const createUser = new CreateUserService();
 
     const user = await createUser.execute({
