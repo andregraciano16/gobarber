@@ -7,6 +7,7 @@ import UpdateUserServiceAvatar from '../services/UpdateUserServiceAvatar';
 
 const usersRouter = Router();
 const upload = multer(uploadConfig);
+
 usersRouter.post('/', async (request, response) => {
     const { name, email, password } = request.body;
     const createUser = new CreateUserService();
@@ -20,21 +21,23 @@ usersRouter.post('/', async (request, response) => {
     delete user.password;
 
     return response.json(user);
-
 });
 
-usersRouter.patch('/avatar', ensureAuthenticated, upload.single('avatar'), async (request, response) => {
+usersRouter.patch(
+    '/avatar',
+    ensureAuthenticated,
+    upload.single('avatar'),
+    async (request, response) => {
+        const updateUserServiceAvatar = new UpdateUserServiceAvatar();
+        const user = await updateUserServiceAvatar.execute({
+            userId: request.user.id,
+            avatarFilename: request.file.filename,
+        });
 
-    const updateUserServiceAvatar = new UpdateUserServiceAvatar();
-    const user = await updateUserServiceAvatar.execute({
-        userId: request.user.id,
-        avatarFilename: request.file.filename,
-    });
+        delete user.password;
 
-    delete user.password;
-
-    return response.json(user);
-
-})
+        return response.json(user);
+    },
+);
 
 export default usersRouter;

@@ -11,7 +11,6 @@ appointmentsRouter.use(ensureAuthenticated);
 
 appointmentsRouter.post('/', async (request, response) => {
     const { providerId, date } = request.body;
-    console.log(providerId);
     const parseDate = parseISO(date);
 
     const createAppointment = new CreateAppointmentService();
@@ -21,7 +20,6 @@ appointmentsRouter.post('/', async (request, response) => {
         providerId,
     });
     return response.json(appointment);
-
 });
 
 appointmentsRouter.get('/', async (request, response) => {
