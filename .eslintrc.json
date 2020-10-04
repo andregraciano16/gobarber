@@ -23,8 +23,16 @@
         "prettier"
     ],
     "rules": {
+        "no-underscore-dangle": "off",
+        "@typescript-eslint/camelcase": "off",
         "max-len": "off",
         "class-methods-use-this": "off",
+        // "@typescript-eslint/interface-name-prefix": [
+        //     "error",
+        //     {
+        //         "prefixWithI": "always"
+        //     }
+        // ],
         "import/extensions": [
             "error",
             "ignorePackages",
