@@ -6,17 +6,21 @@ import fs from 'fs';
 import User from '../infra/typeorm/entities/User';
 import uploadConfig from '../../../config/upload';
 import AppError from '../../../shared/error/AppError';
+import IUserRepository from '../repositories/IUserRepository';
 
-interface Request {
+
+interface IRequest {
     userId: string;
     avatarFilename: string;
 }
 
 class UpdateUserServiceAvatar {
-    public async execute({ userId, avatarFilename }: Request): Promise<User> {
-        const usersRepository = getRepository(User);
 
-        const user = await usersRepository.findOne(userId);
+    constructor(private userRepository: IUserRepository) {}
+
+    public async execute({ userId, avatarFilename }: IRequest): Promise<User> {
+
+        const user = await this.userRepository.findById(userId);
 
         if (!user) {
             throw new AppError(
@@ -37,7 +41,7 @@ class UpdateUserServiceAvatar {
 
         user.avatar = avatarFilename;
 
-        await usersRepository.save(user);
+        await this.userRepository.save(user);
 
         return user;
     }
