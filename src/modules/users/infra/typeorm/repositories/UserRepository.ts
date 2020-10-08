@@ -2,7 +2,6 @@ import { getRepository, Repository } from 'typeorm';
 import IUserRepository from '@modules/users/repositories/IUserRepository';
 import User from '../entities/User';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
-import { isThisSecond } from 'date-fns';
 
 class UsersRepository implements IUserRepository {
     private ormRepository: Repository<User>;
