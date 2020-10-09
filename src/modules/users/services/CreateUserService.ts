@@ -4,6 +4,7 @@ import { injectable, inject } from 'tsyringe';
 import User from '../infra/typeorm/entities/User';
 import AppError from '../../../shared/error/AppError';
 import IUserRepository from '../repositories/IUserRepository';
+import IHashPovider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
     name: string;
@@ -16,7 +17,10 @@ class CreateUserService {
 
     constructor(
         @inject('UserRepository')
-        private userRepository: IUserRepository
+        private userRepository: IUserRepository,
+
+        @inject('HashProvider')
+        private hashPovider: IHashPovider
     ) {}
 
     public async execute({ name, email, password }: IRequest): Promise<User> {
@@ -27,7 +31,7 @@ class CreateUserService {
             throw new AppError('Email address already used. ');
         }
 
-        const hashedPassword = await hash(password, 8);
+        const hashedPassword = await this.hashPovider.generateHash(password);
 
         const user = await this.userRepository.create({
             name,
