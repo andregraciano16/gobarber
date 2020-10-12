@@ -33,7 +33,21 @@
 
 # Painel do prestador
 
+**RF**
 
+- O usuário deve poder listar seus agendamentos em um dia específicos.
+- O pestador deve receber uma notificação sempre que houver um novo agendamento.
+- O prestador deve poder listar todas as notificações não lidas.
+
+**RNF**
+
+- Os agendamentos do prestador no dia devem ser armazenados em cache.
+- As notificações do prestador devem ser armazenados no MongoDB.
+- As notificações do prestador devem ser enviadas em tempo-real utilizando Socket.io.
+
+**RN**
+
+- A notificação deve ter um status de lida ou não lida para que o prestador possa controlar.
 
 # Agendamento de serviço
 
