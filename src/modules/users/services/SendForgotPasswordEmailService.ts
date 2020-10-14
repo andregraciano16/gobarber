@@ -32,7 +32,7 @@ class SendForgotPasswordEmailService {
 
         await this.userTokenRepository.generate(user.id);
 
-        this.mailProvider.sendMail(email, '');
+        await this.mailProvider.sendMail(email, '');
     }
 }
 
