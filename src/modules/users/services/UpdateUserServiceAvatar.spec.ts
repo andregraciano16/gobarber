@@ -3,16 +3,23 @@ import AppError from '@shared/error/AppError';
 import FakeUserRepository from '../repositories/fakes/FakeUsersRepository';
 import UpdateUserAvatarService from './UpdateUserServiceAvatar';
 
+let fakeUserRepository: FakeUserRepository;
+let fakeStorageProvider: FakeStorageProvider;
+let updateUser: UpdateUserAvatarService;
+
 describe('UpdateUserAvatar', () => {
 
-    it('should be able to create new user', async () => {
-        const fakeUserRepository = new FakeUserRepository();
-        const fakeStorageProvider = new FakeStorageProvider();
+    beforeEach(() => {
+        fakeUserRepository = new FakeUserRepository();
+        fakeStorageProvider = new FakeStorageProvider();
 
-        const updateUser = new UpdateUserAvatarService(
+        updateUser = new UpdateUserAvatarService(
             fakeUserRepository,
             fakeStorageProvider,
         );
+    });
+
+    it('should be able to create new user', async () => {
 
         const user = await fakeUserRepository.create({
             name: 'John Doe',
@@ -30,13 +37,6 @@ describe('UpdateUserAvatar', () => {
     });
 
     it('should be able to update avatar from non existing user', async () => {
-        const fakeUserRepository = new FakeUserRepository();
-        const fakeStorageProvider = new FakeStorageProvider();
-
-        const updateUser = new UpdateUserAvatarService(
-            fakeUserRepository,
-            fakeStorageProvider,
-        );
 
         await expect(
             updateUser.execute({
@@ -47,15 +47,8 @@ describe('UpdateUserAvatar', () => {
     });
 
     it('should delete old avatar when updating new one', async () => {
-        const fakeUserRepository = new FakeUserRepository();
-        const fakeStorageProvider = new FakeStorageProvider();
 
         const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
-
-        const updateUser = new UpdateUserAvatarService(
-            fakeUserRepository,
-            fakeStorageProvider,
-        );
 
         const user = await fakeUserRepository.create({
             name: 'John Doe',
@@ -77,8 +70,6 @@ describe('UpdateUserAvatar', () => {
         expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
         expect(user.avatar).toBe('avatar1.jpg');
 
-
     });
-
 
 })
