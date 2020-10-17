@@ -48,14 +48,6 @@ describe('AuthenticateUser', () => {
     });
 
     it('should be able to authenticate with wrong password', async () => {
-        const fakeUserRepository = new FakeUserRepository();
-        const fakeHashProvider = new FakeHashProvider();
-
-        const createUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
-        const authenticateUser = new AuthenticateUserService(
-            fakeUserRepository,
-            fakeHashProvider,
-        );
 
         await createUser.execute({
             name: 'John Doe',
