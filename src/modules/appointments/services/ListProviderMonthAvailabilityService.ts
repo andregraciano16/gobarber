@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import { getDaysInMonth, getDate } from 'date-fns';
 
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
@@ -23,12 +24,31 @@ class ListProviderMonthAvailabilityService {
 
 
     public async execute({ providerId, month, year }: IRequest): Promise<IResponse> {
-       const appointments =  await this.appointmentsRepository.findAllInMonthFromProvider({
-           providerId,
-           year,
-           month,
-       });
-       return appointments;
+        console.log(providerId, month, year)
+        const appointments = await this.appointmentsRepository.findAllInMonthFromProvider({
+            providerId,
+            year,
+            month,
+        });
+        console.log(appointments);
+        const numberOfDaysInMonth = getDaysInMonth(new Date(year, month - 1));
+
+        const eachDays = Array.from(
+            { length: numberOfDaysInMonth },
+            (_, index) => index + 1,
+        );
+
+        const availability = eachDays.map(day => {
+            const appointmentsDay = appointments.filter(appointment => {
+                return getDate(appointment.date) === day;
+            });
+            return {
+                day,
+                available: appointmentsDay.length < 10,
+            };
+        });
+
+        return availability;
     }
 }
 
