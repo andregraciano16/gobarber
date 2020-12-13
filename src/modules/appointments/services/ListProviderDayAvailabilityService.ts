@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import { getDaysInMonth, getDate } from 'date-fns';
+import { getDaysInMonth, getDate, getHours } from 'date-fns';
 
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
@@ -7,15 +7,16 @@ interface IRequest {
     providerId: string;
     month: number;
     year: number;
+    day: number;
 }
 
 type IResponse = Array<{
-    day: number;
+    hour: number;
     available: boolean;
 }>
 
 @injectable()
-class ListProviderMonthAvailabilityService {
+class ListProviderDayAvailabilityService {
 
     constructor(
         @inject('AppointmentsRepository')
@@ -23,26 +24,29 @@ class ListProviderMonthAvailabilityService {
     ) { }
 
 
-    public async execute({ providerId, month, year }: IRequest): Promise<IResponse> {
-        const appointments = await this.appointmentsRepository.findAllInMonthFromProvider({
+    public async execute({ providerId, month, year, day }: IRequest): Promise<IResponse> {
+        const appointments = await this.appointmentsRepository.findAllInDayFromProvider({
             providerId,
             year,
             month,
+            day
         });
+
         const numberOfDaysInMonth = getDaysInMonth(new Date(year, month - 1));
+        const hourStart = 8;
 
         const eachDays = Array.from(
             { length: numberOfDaysInMonth },
-            (_, index) => index + 1,
+            (_, index) => index + hourStart,
         );
 
-        const availability = eachDays.map(day => {
-            const appointmentsDay = appointments.filter(appointment => {
-                return getDate(appointment.date) === day;
+        const availability = eachDays.map(hour => {
+            const appointmentsHour = appointments.find(appointment => {
+                return getHours(appointment.date) === hour;
             });
             return {
-                day,
-                available: appointmentsDay.length < 10,
+                hour,
+                available: !appointmentsHour,
             };
         });
 
@@ -50,4 +54,4 @@ class ListProviderMonthAvailabilityService {
     }
 }
 
-export default ListProviderMonthAvailabilityService;
+export default ListProviderDayAvailabilityService;
