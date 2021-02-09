@@ -32,15 +32,14 @@ class ListProviderDayAvailabilityService {
             day
         });
 
-        const numberOfDaysInMonth = getDaysInMonth(new Date(year, month - 1));
         const hourStart = 8;
 
         const eachDays = Array.from(
-            { length: numberOfDaysInMonth },
+            { length: 10 },
             (_, index) => index + hourStart,
         );
 
-       const currenceDate = new Date(Date.now());
+        const currenceDate = new Date(Date.now());
         const availability = eachDays.map(hour => {
             const appointmentsHour = appointments.find(appointment => {
                 return getHours(appointment.date) === hour;
