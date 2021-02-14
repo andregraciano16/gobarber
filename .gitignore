@@ -6,3 +6,6 @@ build/
 tmp/*
 !tmp/.gitkeep
 temp/
+.env
+coverage
+ormconfig.json
