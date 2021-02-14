@@ -3,6 +3,7 @@ import IAppointmentRepository from '@modules/appointments/repositories/IAppointm
 import Appointment from '../entities/Appointment';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import IFindAllInMonthFromProviderDTO from '../../../dtos/IFindAllInMonthFromProviderDTO';
+import IFindAllInDayFromProviderDTO from '../../../dtos/IFindAllInDayFromProviderDTO';
 
 class AppointmentsRepository implements IAppointmentRepository {
     private ormRepository: Repository<Appointment>;
