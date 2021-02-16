@@ -9,7 +9,7 @@ class AppointmentsRepository implements IAppointmentRepository {
     private ormRepository: Repository<Appointment>;
 
     constructor() {
-        this.ormRepository = getRepository(Appointment);
+        this.ormRepository = getRepository(Appointment, 'postgres');
     }
 
     public async findByDate(date: Date): Promise<Appointment | undefined> {
@@ -33,7 +33,6 @@ class AppointmentsRepository implements IAppointmentRepository {
     public async findAllInDayFromProvider({ providerId, month, year, day }: IFindAllInDayFromProviderDTO): Promise<Appointment[]>{
         const parsedMonth = String(month).padStart(2, '0');
         const parsedDay = String(day).padStart(2, '0');
-        console.log(`${providerId}  ${year} ${month} ${day}`);
         const appointment = this.ormRepository.find({
             where: {
                 providerId,

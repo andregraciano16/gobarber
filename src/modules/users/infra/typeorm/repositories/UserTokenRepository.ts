@@ -7,7 +7,7 @@ class UsersTokenRepository implements IUserTokenRepository {
     private ormRepository: Repository<UserToken>;
 
     constructor() {
-        this.ormRepository = getRepository(UserToken);
+        this.ormRepository = getRepository(UserToken, 'postgres');
     }
 
     public async findByToken(token: string): Promise<UserToken | undefined> {
