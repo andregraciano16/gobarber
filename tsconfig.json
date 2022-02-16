@@ -17,6 +17,11 @@
         "@modules/*": ["modules/*"],
         "@config/*": ["config/*"],
         "@shared/*": ["shared/*"]
-    }
+    },
+
+    "typeRoots": [
+      "./src/@types",
+      "./node_modules/@types"
+    ]
   }
 }

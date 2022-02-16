@@ -44,7 +44,7 @@ class ListProviderMonthAvailabilityService {
             });
             return {
                 day,
-                available: isAfter(new Date(), compareDate) && appointmentsDay.length < 10,
+                available: isAfter(compareDate, new Date()) && appointmentsDay.length < 10,
             };
         });
 
