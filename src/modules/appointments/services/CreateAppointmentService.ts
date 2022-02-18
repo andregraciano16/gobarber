@@ -29,8 +29,8 @@ class CreateAppointmentService {
     ) { }
 
     public async execute({ date, providerId, userId }: IRequest): Promise<Appointment> {
-
         const appointmentDate = startOfHour(date);
+        
         const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
             appointmentDate,
             providerId,
