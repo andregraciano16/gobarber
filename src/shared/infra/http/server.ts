@@ -16,10 +16,10 @@ import AppError from '../../error/AppError';
 import rateLimiter from './middlewares/rateLimiter';
 
 const app = express();
-app.use(rateLimiter);
 app.use(cors());
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadFolder));
+app.use(rateLimiter);
 app.use(routes);
 
 app.use(errors());

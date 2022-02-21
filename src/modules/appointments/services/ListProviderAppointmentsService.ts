@@ -27,7 +27,7 @@ class ListProviderAppointmentsService {
         const cachekey =  `provider-appointments:${providerId}:${year}-${month}-${day}`;
 
         let appoitments =  await this.cacheProvider.recover<Appointment[]>(cachekey);
-
+        
         if(!appoitments) {
             appoitments = await this.appointmentsRepository.findAllInDayFromProvider({
                 providerId,
@@ -38,6 +38,7 @@ class ListProviderAppointmentsService {
 
             await this.cacheProvider.save(cachekey, classToClass(appoitments));
         }
+
         return appoitments;
     }
 }
